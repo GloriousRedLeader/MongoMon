@@ -1,0 +1,36 @@
+Version 3.4
+- fixed bug where 0 team kills resulted in corrupt stats
+- adding support for mercenary mode
+- adding support for seething shore
+- brawls no longer supported to prevent addon from breaking
+
+Version 3.5
+- added mercenary mode wins vs. losses to /mm stats
+- fixed dependency issues that managed addon configuration in /mm config
+
+Version 4.0
+- internationalization issue fixed, the addon should work in all clients now (thanks Diablolock7)
+- added highlighted font for ranked categories (/mm stats, left side)
+- no longer able to view kills page when kills are 0
+- added much anticipated credits screen
+- now supports Portuguese
+- removed blacklist AV as its no longer needed
+- adding data patching framework for future changes if need be
+- fine tuned killing blow logic so spells such as Ray of Hope no longer award credit for killing an ally
+- added some light touches to the ui
+- added option to auto send after action report (default is disabled)
+
+Version 4.1
+- personal scoreboard should no reset at the beginning of a match
+- healer personal scoreboard now starts gray instead of green
+- personal scoreboard now displays how far ahead or behind you are in damage and healing
+
+Version 4.2
+- scoreboard should no longer start in red state (top damage) or green stats (top healing) at start of bg
+
+Version 5.0
+- 8.0 API changes (C_Map, GetClassInfoByID, IsInInstance / PLAYER_ENTERING_WORLD, COMBAT_LOG_EVENT_UNFILTERED)
+- Updated dependencies to 8.0 compatible libraries
+- Detecting supported BG logic changed
+- Added data patching from previous versions of MongoMon to 5.0
+
