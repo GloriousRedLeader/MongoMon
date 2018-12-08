@@ -1,0 +1,23 @@
+## Interface: 80000
+## Title: Mongo Monitor OP Unit Frames
+## Notes: Battleground Enhancer
+## Author: Fuhrbolg
+## Version: 5.1
+## SavedVariables: MongoMonDB
+## OptionalDeps: Ace3, LibNameplateRegistry-1.0
+## X-Embeds: Ace3, LibNameplateRegistry-1.0
+
+## Libraries
+embeds.xml
+
+## Locale Translations
+Locale\Locales.xml
+
+## Core
+Config.lua
+Util.lua
+MatchHistory.lua
+UI.lua
+Patch.lua
+MongoMon.lua
+Test.lua

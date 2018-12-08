@@ -55,11 +55,102 @@ function MongoMonTest:Run()
 	self:TestGetDamageHealingDiffTextRank1Damage()
 	self:TestGetDamageHealingDiffTextNotRank1Damage()
 	self:TestUpgradeTo5()
+	self:TestUpgradeTo51()
 	
 	-- Only run when using ptBR
 	--self:TestUpgradeTo4ptBR()
 	
 	print("All tests passed")
+end
+
+--[[
+-	Remove records with empty mapId. This is a thing.
+-
+-]]
+function MongoMonTest:TestUpgradeTo51()
+
+	local records = {
+		{
+			["playerPercentHealingOfTeam"] = "4.27",
+			["class"] = "Hunter",
+			["kills"] = 0,
+			["mapId"] = 91
+		},
+		{
+			["playerPercentHealingOfTeam"] = "4.27",
+			["class"] = "Hunter",
+			["kills"] = 0,
+			["isHealer"] = false,
+			["damageRank"] = 11,
+			["enemyHealing"] = 7503642,
+			["healing"] = 333030,
+			["enemyDamage"] = 11312939,
+			["teamDeaths"] = 27,
+			["name"] = "Draxylcution",
+			["teamDamage"] = 8664752,
+			["healingRank"] = 13,
+			["classId"] = 3,
+			["season"] = 26,
+			["mercenaryMode"] = false,
+			["time"] = 1543089485,
+			["isRated"] = false,
+			["didPlayerWin"] = true,
+			["playerPercentKillsOfTeam"] = "0.00",
+			["avgTeamDamage"] = 876305.444444445,
+			["damage"] = 778003,
+			["players"] = {
+				["kills"] = {
+					["WARRIOR-1-71"] = 1,
+					["HUNTER-3-253"] = 1,
+					["DRUID-11-102"] = 1,
+				},
+				["all"] = {
+					["HUNTER-3-255"] = 1,
+					["WARRIOR-1-72"] = 1,
+					["PALADIN-2-65"] = 1,
+					["WARLOCK-9-265"] = 2,
+					["WARRIOR-1-71"] = 1,
+					["ROGUE-4-260"] = 1,
+					["PRIEST-5-256"] = 3,
+					["HUNTER-3-253"] = 3,
+					["ROGUE-4-261"] = 2,
+					["ROGUE-4-259"] = 2,
+					["WARLOCK-9-267"] = 2,
+					["DRUID-11-102"] = 1,
+				},
+				["healing"] = {
+					["PALADIN-2-65"] = 1,
+					["PRIEST-5-256"] = 3,
+					["WARLOCK-9-265"] = 1,
+				},
+				["damage"] = {
+					["HUNTER-3-253"] = 1,
+					["WARLOCK-9-265"] = 1,
+					["DRUID-11-102"] = 1,
+				},
+			},
+			["deaths"] = 2,
+			["race"] = "Undead",
+			["teamHealing"] = 7805711,
+			["spec"] = "Beast Mastery",
+			["classToken"] = "HUNTER",
+			["teamKills"] = 13,
+			["avgTeamKills"] = 1.44444444444444,
+			["enemyKills"] = 27,
+			["specId"] = 253,
+			["avgTeamDeaths"] = 2.77777777777778,
+			["faction"] = "Horde",
+			["avgTeamHealing"] = 830297.888888889,
+			["playerPercentDamageOfTeam"] = "8.98",
+			["enemyDeaths"] = 13,
+			["rank"] = 18,
+		}
+	}
+	
+	MongoMonPatch:Upgrade(records, "5.0", "5.1")
+	
+	assert(records[1]["mapId"] == 91, "Map ID is valid")
+	assert(tablelength(records) == 1, "Table length should be 1")
 end
 
 --[[
