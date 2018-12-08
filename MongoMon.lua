@@ -742,8 +742,12 @@ function MongoMon:UpdateBattlefieldScore()
 	if winningFaction ~= nil and self.AAR_DISPLAYED == false then
 		self.AAR_DISPLAYED = true
 		local record = MatchHistoryRecord.New(self.player, self.players)
-		self.history:Save(record)
-		updateAfterActionReport(record, self.db.aarEnabled, self.db.aarAutoSendEnabled)
+		if record == nil then
+			print(string.format("|c%s" .. L["SaveFailed"] .. "|r", TEXT_COLOR))
+		else
+			self.history:Save(record)
+			updateAfterActionReport(record, self.db.aarEnabled, self.db.aarAutoSendEnabled)
+		end
 	end
 end
 

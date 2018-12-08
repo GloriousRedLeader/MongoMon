@@ -618,7 +618,10 @@ MatchHistoryRecord.New = function(player, players)
 	self.season = GetCurrentArenaSeason()
 	self.isRated = IsRatedBattleground()	
 	
-    return self
+	-- Apparently mapId is not guaranteed and will corrupt data. This record will be lost.
+	if self.mapId == nil then return end
+
+	return self
 end
 
 --[[

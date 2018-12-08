@@ -46,7 +46,7 @@ function MongoMonPatch:Upgrade(records, fromVersionStr, toVersionStr)
 	local fromVersion = fromVersionStr ~= nil and tonumber(fromVersionStr) or 0
 	local toVersion = toVersionStr ~= nil and tonumber(toVersionStr) or 0
 
-	-- Any version that has saved data before 4.0
+	-- Any version that has saved data before 4.0 (internationalization support)
 	if tablelength(records) > 0 and fromVersion == 0 and toVersion >= 4.0 then
 		local locale = GetLocale()
 		local message = nil
@@ -102,7 +102,10 @@ function MongoMonPatch:Upgrade(records, fromVersionStr, toVersionStr)
 			for k, _ in pairs(records) do records[k] = nil end
 		end
 		print(message)
-	elseif tablelength(records) > 0 and fromVersion > 0 and fromVersion < 5.0 and toVersion >= 5.0 then
+	end
+	
+	-- Any version before 5.0 (map id udpate)
+	if tablelength(records) > 0 and fromVersion > 0 and fromVersion < 5.0 and toVersion == 5.0 then
 		mapIdChanges = {
 			[401] = 91,	-- Alterac Valley
 			[461] = 93,	-- Arathi Basin
@@ -120,6 +123,17 @@ function MongoMonPatch:Upgrade(records, fromVersionStr, toVersionStr)
 		for _, record in pairs(records) do
 			if record.mapId ~= nil and mapIdChanges[record.mapId] ~= nil then
 				record.mapId = mapIdChanges[record.mapId]
+			end
+		end
+		message = string.gsub(L["PatchSuccess"], "#TO_VERSION#", toVersionStr)
+		print(message)
+	end
+	
+	-- Any version before 5.1 (nil mapId)
+	if tablelength(records) > 0 and fromVersion > 0 and fromVersion < 5.1 and toVersion >= 5.1 then
+		for k, record in pairs(records) do
+			if record.mapId == nil then
+				table.remove(records, k)
 			end
 		end
 		message = string.gsub(L["PatchSuccess"], "#TO_VERSION#", toVersionStr)
