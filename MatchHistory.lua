@@ -619,48 +619,7 @@ MatchHistoryRecord.New = function(player, players)
 	self.isRated = IsRatedBattleground()	
 	
 	-- Apparently mapId is not guaranteed and will corrupt data. This record will be lost.
-	-- So we might as well be vigilant and assume all values should be verified.
 	if self.mapId == nil then return end
---[[	
-	if self.name == nil then return end
-	if self.kills == nil then return end
-	if self.deaths == nil then return end
-	if self.damage == nil then return end
-	if self.healing == nil then return end
-	if self.class == nil then return end
-	if self.classId == nil then return end
-	if self.classToken == nil then return end
-	if self.spec == nil then return end
-	if self.specId == nil then return end
-	if self.rank == nil then return end
-	if self.damageRank == nil then return end
-	if self.healingRank == nil then return end
-	if self.faction == nil then return end
-	if self.mercenaryMode == nil then return end
-	if self.race == nil then return end
-	if self.isHealer == nil then return end
-	if self.killHistory == nil then return end -- can be nil
-	if self.time == nil then return end
-	if self.enemyDamage == nil then return end
-	if self.enemyHealing == nil then return end
-	if self.teamDamage == nil then return end
-	if self.teamHealing == nil then return end
-	if self.teamKills == nil then return end
-	if self.teamDeaths == nil then return end
-	if self.enemyKills == nil then return end
-	if self.enemyDeaths == nil then return end
-	if self.avgTeamKills == nil then return end
-	if self.avgTeamDeaths == nil then return end
-	if self.avgTeamDamage == nil then return end
-	if self.avgTeamHealing == nil then return end
-	if self.playerPercentDamageOfTeam == nil then return end
-	if self.playerPercentHealingOfTeam == nil then return end
-	if self.playerPercentKillsOfTeam == nil then return end
-	if self.players == nil then return end
-	if self.season == nil then return end
-	if self.isRated == nil then return end
-	if self.didPlayerWin == nil then return end
---]]
 
 	return self
 end
