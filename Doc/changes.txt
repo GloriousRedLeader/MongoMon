@@ -34,3 +34,5 @@ Version 5.0
 - Detecting supported BG logic changed
 - Added data patching from previous versions of MongoMon to 5.0
 
+Version 5.1
+- fixing corrupt bg history data
