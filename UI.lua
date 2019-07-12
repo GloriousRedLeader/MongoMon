@@ -92,7 +92,7 @@ scoreFrame:SetBackdrop(BACKDROP_BAD)
 scoreFrame:SetScript("OnMouseUp", function(self, button) -- Toggle the actual bg scoreboard when you press this.
 	LibStub("LibButtonGlow-1.0").ShowOverlayGlow(scoreFrame)
 	LibStub("LibButtonGlow-1.0").HideOverlayGlow(scoreFrame)	
-	ToggleWorldStateScoreFrame()
+	TogglePVPScoreboardOrResults()
 end)
 
 -- Gradient background overlay, this makes the empty icons look better
@@ -357,7 +357,7 @@ killHistoryFrame.scrollingTable = ScrollingTable:CreateST(cols, 27, nil, nil, ki
 local matchHistoryFrame = CreateFrame("FRAME", "MongoMonMatchHistoryFrame")
 matchHistoryFrame:SetFrameStrata("HIGH")
 matchHistoryFrame:SetPoint("CENTER", nil, "CENTER", 0, 0)
-matchHistoryFrame:SetWidth(830)
+matchHistoryFrame:SetWidth(930)
 matchHistoryFrame:SetHeight(685)
 matchHistoryFrame:SetBackdrop(BACKDROP_BAD)
 matchHistoryFrame:SetMovable(true)
@@ -376,7 +376,7 @@ matchHistoryFrame.title:SetText(L["TitleAndAuthor"])
 matchHistoryFrame.backgroundFrame = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.backgroundFrame:SetFrameLevel(0)
 matchHistoryFrame.backgroundFrame:SetPoint("CENTER", matchHistoryFrame, "CENTER", 0, 0)
-matchHistoryFrame.backgroundFrame:SetSize(820, 675)
+matchHistoryFrame.backgroundFrame:SetSize(920, 675)
 matchHistoryFrame.backgroundTexture = matchHistoryFrame.backgroundFrame:CreateTexture()
 matchHistoryFrame.backgroundTexture:SetAlpha(ALPHA_VALUE)
 matchHistoryFrame.backgroundTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\ScoreboardBackground")
@@ -408,7 +408,7 @@ matchHistoryFrame.mercSummaryFontString:SetPoint("TOP", matchHistoryFrame.descri
 
 matchHistoryFrame.separatorFrame = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.separatorFrame:SetPoint("TOP", matchHistoryFrame.playerSummaryFontString, "BOTTOM", 0, -5)
-matchHistoryFrame.separatorFrame:SetSize(750, 5)
+matchHistoryFrame.separatorFrame:SetSize(850, 5)
 matchHistoryFrame.separatorTexture = matchHistoryFrame.separatorFrame:CreateTexture()
 matchHistoryFrame.separatorTexture:SetAlpha(ALPHA_VALUE)
 matchHistoryFrame.separatorTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\ScoreboardBackground")
@@ -498,7 +498,7 @@ matchHistoryFrame.noDeathCrestFrame.summaryFontString:SetJustifyH("LEFT")
 matchHistoryFrame.topSpecKills = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.topSpecKills:SetWidth(175)
 matchHistoryFrame.topSpecKills:SetHeight(100)
-matchHistoryFrame.topSpecKills:SetPoint("LEFT", matchHistoryFrame.killsCrestFrame, "RIGHT", 480, -10)
+matchHistoryFrame.topSpecKills:SetPoint("LEFT", matchHistoryFrame.killsCrestFrame, "RIGHT", 540, -10)
 
 matchHistoryFrame.topSpecKills.titleFontString = matchHistoryFrame.topSpecKills:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 matchHistoryFrame.topSpecKills.titleFontString:SetPoint("TOPLEFT", matchHistoryFrame.topSpecKills, "TOPLEFT", 0, 0) 
@@ -509,7 +509,7 @@ matchHistoryFrame.topSpecKills.titleFontString:SetText(L["TopSpecs"] .. ": " .. 
 matchHistoryFrame.topSpecMostSeen = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.topSpecMostSeen:SetWidth(175)
 matchHistoryFrame.topSpecMostSeen:SetHeight(100)
-matchHistoryFrame.topSpecMostSeen:SetPoint("LEFT", matchHistoryFrame.noDeathCrestFrame, "RIGHT", 480, -10)
+matchHistoryFrame.topSpecMostSeen:SetPoint("LEFT", matchHistoryFrame.noDeathCrestFrame, "RIGHT", 540, -10)
 
 matchHistoryFrame.topSpecMostSeen.titleFontString = matchHistoryFrame.topSpecMostSeen:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 matchHistoryFrame.topSpecMostSeen.titleFontString:SetPoint("TOPLEFT", matchHistoryFrame.topSpecMostSeen, "TOPLEFT", 0, 0) 
@@ -520,7 +520,7 @@ matchHistoryFrame.topSpecMostSeen.titleFontString:SetText(L["TopSpecs"] .. ": " 
 matchHistoryFrame.topSpecDamage = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.topSpecDamage:SetWidth(175)
 matchHistoryFrame.topSpecDamage:SetHeight(100)
-matchHistoryFrame.topSpecDamage:SetPoint("LEFT", matchHistoryFrame.topDamageCrestFrame, "RIGHT", 480, -10)
+matchHistoryFrame.topSpecDamage:SetPoint("LEFT", matchHistoryFrame.topDamageCrestFrame, "RIGHT", 540, -10)
 
 matchHistoryFrame.topSpecDamage.titleFontString = matchHistoryFrame.topSpecDamage:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 matchHistoryFrame.topSpecDamage.titleFontString:SetPoint("TOPLEFT", matchHistoryFrame.topSpecDamage, "TOPLEFT", 0, 0) 
@@ -531,7 +531,7 @@ matchHistoryFrame.topSpecDamage.titleFontString:SetText(L["TopSpecs"] .. ": " ..
 matchHistoryFrame.topSpecHealing = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.topSpecHealing:SetWidth(175)
 matchHistoryFrame.topSpecHealing:SetHeight(100)
-matchHistoryFrame.topSpecHealing:SetPoint("LEFT", matchHistoryFrame.topHealingCrestFrame, "RIGHT", 480, -10)
+matchHistoryFrame.topSpecHealing:SetPoint("LEFT", matchHistoryFrame.topHealingCrestFrame, "RIGHT", 540, -10)
 
 matchHistoryFrame.topSpecHealing.titleFontString = matchHistoryFrame.topSpecHealing:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 matchHistoryFrame.topSpecHealing.titleFontString:SetPoint("TOPLEFT", matchHistoryFrame.topSpecHealing, "TOPLEFT", 0, 0) 
@@ -540,13 +540,13 @@ matchHistoryFrame.topSpecHealing.titleFontString:SetText(L["TopSpecs"] .. ": " .
 
 -- Battleground map stats
 matchHistoryFrame.battlegroundStats = CreateFrame("FRAME", nil, matchHistoryFrame)
-matchHistoryFrame.battlegroundStats:SetWidth(830)
+matchHistoryFrame.battlegroundStats:SetWidth(930)
 matchHistoryFrame.battlegroundStats:SetHeight(100)
 matchHistoryFrame.battlegroundStats:SetPoint("TOPLEFT", matchHistoryFrame.noDeathCrestFrame, "BOTTOMLEFT", -50, -30)
 
 matchHistoryFrame.battlegroundStats.separatorFrame = CreateFrame("FRAME", nil, matchHistoryFrame.battlegroundStats)
 matchHistoryFrame.battlegroundStats.separatorFrame:SetPoint("TOP", matchHistoryFrame.battlegroundStats, "TOP", 0, 0)
-matchHistoryFrame.battlegroundStats.separatorFrame:SetSize(750, 5)
+matchHistoryFrame.battlegroundStats.separatorFrame:SetSize(850, 5)
 
 matchHistoryFrame.battlegroundStats.separatorTexture = matchHistoryFrame.battlegroundStats.separatorFrame:CreateTexture()
 matchHistoryFrame.battlegroundStats.separatorTexture:SetAlpha(ALPHA_VALUE)
@@ -1001,8 +1001,8 @@ local function createBattlegroundStats(parent)
 	
 	-- Build one entry for each BG map.
 	for mapId, mapName in pairs(BG_MAP_IDS) do
-		local offsetX = (i / 5 > 1 and  (i - 6) * width or (i * width)) + 50
-		local offsetY = (i / 5 > 1 and -height - 15 or 0) - 10
+		local offsetX = (i / 6 > 1 and  (i - 7) * width or (i * width)) + 50
+		local offsetY = (i / 6 > 1 and -height - 15 or 0) - 10
 		local frame = CreateFrame("FRAME", nil, parent)
 		frame:SetPoint("TOPLEFT", parent, "TOPLEFT", offsetX, offsetY)
 		frame:SetSize(width, height)
@@ -1216,7 +1216,7 @@ local function createPieChart(parent, values, colors, legend)
 	-- Only create this travesty of justice once and reuse it.
 	if not parent.pieChart then
 		local Graph = LibStub("LibGraph-2.0")
-		parent.pieChart = Graph:CreateGraphPieChart(nil, parent, "LEFT", "RIGHT",350, -10, 100, 100)
+		parent.pieChart = Graph:CreateGraphPieChart(nil, parent, "LEFT", "RIGHT", 370, -10, 100, 100)
 		createPieLegendFrame(nil, parent.pieChart, "TOP", "BOTTOM", legend)	
 	else
 		parent.pieChart:ResetPie()

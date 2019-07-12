@@ -36,3 +36,7 @@ Version 5.0
 
 Version 5.1
 - fixing corrupt bg history data
+
+Version 5.2
+- adding wintergrasp and ashran "epic" battlegrounds
+- fixing 8.2 issue where clicking mongomon scoreboard would not toggle bg score frame

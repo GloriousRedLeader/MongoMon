@@ -221,6 +221,7 @@ end
 
 -- Updated for 8.0. The fascists changed their API so we can no longer use GetMapNameByID.
 -- Whats more is the Map IDs changed as well. Praise stalin. 
+-- Use this to get current map id: C_Map.GetBestMapForUnit("player")
 local BG_MAP_IDS = {
 	[91] = C_Map.GetMapInfo(91).name,	-- Alterac Valley [OLD: 401]
 	[93] = C_Map.GetMapInfo(93).name,	-- Arathi Basin - This obviously needs 3 Map IDs (93, 837, 844) [OLD: 461]
@@ -233,7 +234,9 @@ local BG_MAP_IDS = {
 	[275] = C_Map.GetMapInfo(275).name,	-- The Battle for Gilneas [OLD: 736]
 	[206] = C_Map.GetMapInfo(206).name,	-- Twin Peaks [OLD: 626]
 	[92] = C_Map.GetMapInfo(92).name,	-- Warsong Gulch - Two Map IDs (92, 859) [OLD: 443]
-	[907] = C_Map.GetMapInfo(907).name	-- Seething Shore [OLD: 1186]
+	[907] = C_Map.GetMapInfo(907).name,	-- Seething Shore [OLD: 1186]
+	[1334] = C_Map.GetMapInfo(1334).name,	-- Wintergrasp "Epic" Battleground lol
+	[1478] = C_Map.GetMapInfo(1478).name	-- Assram "Epic" Battleground lol
 }
 
 -- Needed to map the codes for the GetBattlefieldWinners API
@@ -263,7 +266,7 @@ local SEND_TO_CHAT_COOLDOWN = 60
 local TEXT_COLOR = "00d606ad"
 
 -- Eff em
-local NO_CREDIT = { "Surly", "Bleem", "Mrs. Bleem", "Gajing", "Diablolock7" }
+local NO_CREDIT = { "Surly", "Bleem", "Mrs. Bleem", "Gajing", "Diablolock7", "Draomin" }
 
 -- Should always be disabled.
 local DEBUG_ENABLED = false
