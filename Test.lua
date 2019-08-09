@@ -56,11 +56,37 @@ function MongoMonTest:Run()
 	self:TestGetDamageHealingDiffTextNotRank1Damage()
 	self:TestUpgradeTo5()
 	self:TestUpgradeTo51()
+	self:TestUpgradeTo53()
 	
 	-- Only run when using ptBR
 	--self:TestUpgradeTo4ptBR()
 	
 	print("All tests passed")
+end
+
+--[[
+-	New MapID for WSG and AB
+-
+-]]
+function MongoMonTest:TestUpgradeTo53()
+
+	local records = {
+		{
+			["mapId"] = 93 -- Arathi Basin 93 -> 1366
+		},
+		{
+			["mapId"] = 92 -- Warsong Gulch 92 -> 1339
+		},
+		{
+			["mapId"] = 860 -- Silvershard Mines (Unchanged)
+		}
+	}
+	
+	MongoMonPatch:Upgrade(records, "5.1", "5.3")
+	
+	assert(records[1].mapId == 1366, "Arathi Basin")
+	assert(records[2].mapId == 1339, "Warsong Gulch")
+	assert(records[3].mapId ==  860, "Silvershard Mines (Unchanged)")
 end
 
 --[[

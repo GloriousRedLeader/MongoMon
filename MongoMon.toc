@@ -2,7 +2,7 @@
 ## Title: Mongo Monitor OP Unit Frames
 ## Notes: Battleground Enhancer
 ## Author: Fuhrbolg
-## Version: 5.1
+## Version: 5.3
 ## SavedVariables: MongoMonDB
 ## OptionalDeps: Ace3, LibNameplateRegistry-1.0
 ## X-Embeds: Ace3, LibNameplateRegistry-1.0

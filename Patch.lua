@@ -139,6 +139,21 @@ function MongoMonPatch:Upgrade(records, fromVersionStr, toVersionStr)
 		message = string.gsub(L["PatchSuccess"], "#TO_VERSION#", toVersionStr)
 		print(message)
 	end
+	
+	-- Any version before 5.3 WSG and AB new MapIDs
+	if tablelength(records) > 0 and fromVersion > 0 and fromVersion < 5.3 and toVersion >= 5.3 then
+		mapIdChanges = {
+			[93] = 1366,	-- Arathi Basin
+			[92] = 1339	-- Warsong Gulch
+		}
+		for _, record in pairs(records) do
+			if record.mapId ~= nil and mapIdChanges[record.mapId] ~= nil then
+				record.mapId = mapIdChanges[record.mapId]
+			end
+		end
+		message = string.gsub(L["PatchSuccess"], "#TO_VERSION#", toVersionStr)
+		print(message)
+	end
 end
 
 --[[

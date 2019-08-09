@@ -223,7 +223,7 @@ end
 -- Whats more is the Map IDs changed as well. Praise stalin. 
 local BG_MAP_IDS = {
 	[91] = C_Map.GetMapInfo(91).name,	-- Alterac Valley [OLD: 401]
-	[93] = C_Map.GetMapInfo(93).name,	-- Arathi Basin - This obviously needs 3 Map IDs (93, 837, 844) [OLD: 461]
+	[1366] = C_Map.GetMapInfo(1366).name,	-- Arathi Basin - This obviously needs 3 Map IDs (93, 837, 844) [OLD: 461] 5.3: 93 -> 1366
 	[519] = C_Map.GetMapInfo(519).name,	-- Deepwind Gorge [OLD: 935] 
 	[112] = C_Map.GetMapInfo(112).name,	-- Eye of the Storm - Two Map IDs (112, 397) [OLD: 482]
 	[169] = C_Map.GetMapInfo(169).name,	-- Isle of Conquest [OLD: 540]
@@ -232,8 +232,10 @@ local BG_MAP_IDS = {
 	[417] = C_Map.GetMapInfo(417).name,	-- Temple of Kotmogu - Two Map IDs (417, 449) [OLD: 856]
 	[275] = C_Map.GetMapInfo(275).name,	-- The Battle for Gilneas [OLD: 736]
 	[206] = C_Map.GetMapInfo(206).name,	-- Twin Peaks [OLD: 626]
-	[92] = C_Map.GetMapInfo(92).name,	-- Warsong Gulch - Two Map IDs (92, 859) [OLD: 443]
-	[907] = C_Map.GetMapInfo(907).name	-- Seething Shore [OLD: 1186]
+	[1339] = C_Map.GetMapInfo(1339).name,	-- Warsong Gulch - Two Map IDs (92, 859) [OLD: 443] 5.3 92 -> 1339
+	[907] = C_Map.GetMapInfo(907).name,	-- Seething Shore [OLD: 1186]
+	[1334] = C_Map.GetMapInfo(1334).name,	-- Wintergrasp "Epic" Battleground lol
+	[1478] = C_Map.GetMapInfo(1478).name	-- Assram "Epic" Battleground lol
 }
 
 -- Needed to map the codes for the GetBattlefieldWinners API
@@ -263,7 +265,7 @@ local SEND_TO_CHAT_COOLDOWN = 60
 local TEXT_COLOR = "00d606ad"
 
 -- Eff em
-local NO_CREDIT = { "Surly", "Bleem", "Mrs. Bleem", "Gajing", "Diablolock7" }
+local NO_CREDIT = { "Surly", "Bleem", "Mrs. Bleem", "Gajing", "Diablolock7", "Draomin", "Beauishomer" }
 
 -- Should always be disabled.
 local DEBUG_ENABLED = false
