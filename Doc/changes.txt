@@ -43,3 +43,12 @@ Version 5.2
 
 Version 5.3
 - Updating MapIDs for WSG and AB
+
+Version 5.4
+- Updating MapIDs for 8.3 (Deepwind Gorge)
+- Removing SoTA, praise be
+- BG Stats page was showing assram and twin peaks outside the UI boundary (/mm stats)
+- Nameplate scores and icons can now be toggled individually (/mm config)
+- Adding some height to the credits frame (/mm credits)
+- Added dropdown to select the after action report chat location
+- Clicking personal scoreboard will once again open the battleground scoreboard

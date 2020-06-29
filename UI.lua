@@ -92,7 +92,7 @@ scoreFrame:SetBackdrop(BACKDROP_BAD)
 scoreFrame:SetScript("OnMouseUp", function(self, button) -- Toggle the actual bg scoreboard when you press this.
 	LibStub("LibButtonGlow-1.0").ShowOverlayGlow(scoreFrame)
 	LibStub("LibButtonGlow-1.0").HideOverlayGlow(scoreFrame)	
-	ToggleWorldStateScoreFrame()
+	TogglePVPScoreboardOrResults()
 end)
 
 -- Gradient background overlay, this makes the empty icons look better
@@ -357,7 +357,7 @@ killHistoryFrame.scrollingTable = ScrollingTable:CreateST(cols, 27, nil, nil, ki
 local matchHistoryFrame = CreateFrame("FRAME", "MongoMonMatchHistoryFrame")
 matchHistoryFrame:SetFrameStrata("HIGH")
 matchHistoryFrame:SetPoint("CENTER", nil, "CENTER", 0, 0)
-matchHistoryFrame:SetWidth(830)
+matchHistoryFrame:SetWidth(930)
 matchHistoryFrame:SetHeight(685)
 matchHistoryFrame:SetBackdrop(BACKDROP_BAD)
 matchHistoryFrame:SetMovable(true)
@@ -376,7 +376,7 @@ matchHistoryFrame.title:SetText(L["TitleAndAuthor"])
 matchHistoryFrame.backgroundFrame = CreateFrame("FRAME", nil, matchHistoryFrame)
 matchHistoryFrame.backgroundFrame:SetFrameLevel(0)
 matchHistoryFrame.backgroundFrame:SetPoint("CENTER", matchHistoryFrame, "CENTER", 0, 0)
-matchHistoryFrame.backgroundFrame:SetSize(820, 675)
+matchHistoryFrame.backgroundFrame:SetSize(920, 675)
 matchHistoryFrame.backgroundTexture = matchHistoryFrame.backgroundFrame:CreateTexture()
 matchHistoryFrame.backgroundTexture:SetAlpha(ALPHA_VALUE)
 matchHistoryFrame.backgroundTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\ScoreboardBackground")
@@ -540,9 +540,9 @@ matchHistoryFrame.topSpecHealing.titleFontString:SetText(L["TopSpecs"] .. ": " .
 
 -- Battleground map stats
 matchHistoryFrame.battlegroundStats = CreateFrame("FRAME", nil, matchHistoryFrame)
-matchHistoryFrame.battlegroundStats:SetWidth(830)
+matchHistoryFrame.battlegroundStats:SetWidth(930)
 matchHistoryFrame.battlegroundStats:SetHeight(100)
-matchHistoryFrame.battlegroundStats:SetPoint("TOPLEFT", matchHistoryFrame.noDeathCrestFrame, "BOTTOMLEFT", -50, -30)
+matchHistoryFrame.battlegroundStats:SetPoint("TOPLEFT", matchHistoryFrame.noDeathCrestFrame, "BOTTOMLEFT", -100, -30)
 
 matchHistoryFrame.battlegroundStats.separatorFrame = CreateFrame("FRAME", nil, matchHistoryFrame.battlegroundStats)
 matchHistoryFrame.battlegroundStats.separatorFrame:SetPoint("TOP", matchHistoryFrame.battlegroundStats, "TOP", 0, 0)
@@ -681,14 +681,6 @@ afterActionFrame.button:SetPoint("BOTTOMRIGHT",afterActionFrame, "BOTTOMRIGHT", 
 afterActionFrame.button:RegisterForClicks("AnyUp")
 afterActionFrame.button:SetSize(145, 25)
 afterActionFrame.button:SetText(L["SendToChat"])
-afterActionFrame.button:SetScript("OnClick", function(self) 
-	if not self.lastReportTime or self.lastReportTime + SEND_TO_CHAT_COOLDOWN < time() then
-		self.lastReportTime = time()
-		local version = GetAddOnMetadata("MongoMon", "Version")
-		local text = "[" .. L["Title"] .. " v" .. version .. "] " .. self:GetParent().reportTeamFontString:GetText()
-		SendChatMessage(text, "INSTANCE_CHAT")
-	end
-end)
 
 --[[
  -	The Credits Screen
@@ -701,7 +693,7 @@ creditsFrame:SetFrameStrata("HIGH") -- Appear above annoying junk
 creditsFrame:SetFrameLevel(10) -- Appear above annoying junk
 creditsFrame:SetPoint("TOP", nil, "TOP", 0, -20)
 creditsFrame:SetWidth(310)
-creditsFrame:SetHeight(160)
+creditsFrame:SetHeight(200)
 creditsFrame:SetBackdrop(BACKDROP_RED)
 creditsFrame:SetMovable(true)
 creditsFrame:EnableMouse(true)
@@ -1001,8 +993,8 @@ local function createBattlegroundStats(parent)
 	
 	-- Build one entry for each BG map.
 	for mapId, mapName in pairs(BG_MAP_IDS) do
-		local offsetX = (i / 5 > 1 and  (i - 6) * width or (i * width)) + 50
-		local offsetY = (i / 5 > 1 and -height - 15 or 0) - 10
+		local offsetX = (i / 6 > 1 and  (i - 7) * width or (i * width)) + 50
+		local offsetY = (i / 6 > 1 and -height - 15 or 0) - 10
 		local frame = CreateFrame("FRAME", nil, parent)
 		frame:SetPoint("TOPLEFT", parent, "TOPLEFT", offsetX, offsetY)
 		frame:SetSize(width, height)
@@ -1535,9 +1527,13 @@ end
  -
  -	@param table Player object
  -	@param Frame plateFrame
+ -	@param bool flag indicating whether kill - death score should be displayed on nameplate
+ -	@param bool flag indicating whether top mongo icons should be displayed on nameplate
 --]]
-local function addMongoMonToNameplate(player, plateFrame)
+local function addMongoMonToNameplate(player, plateFrame, nameplateScoreEnabled, nameplateIconsEnabled)
 	-- Create Fontstring for Kill - Death score
+	-- Create regardless of whether score on nameplates is enabled. They may enable it later
+	-- and may need it to avoid null references. I think. Honestly too lazy to dig deeper.
 	local scoreFontString = plateFrame:CreateFontString()
 	scoreFontString:SetFont(_G.NumberFont_Shadow_Small:GetFont(), 15, "THICKOUTLINE")
 	if player.enemy then
@@ -1548,13 +1544,18 @@ local function addMongoMonToNameplate(player, plateFrame)
 	scoreFontString:SetPoint("CENTER", 0, 35)
 	scoreFontString:SetText(player.kills .. " - " .. player.deaths)
 	
+	-- Hide after creation if nameplate score is disabled
+	if not nameplateScoreEnabled then
+		scoreFontString:Hide()
+	end
+	
 	local rankTexture = plateFrame:CreateTexture()
 	rankTexture:SetWidth(32)
 	rankTexture:SetHeight(32)
 	rankTexture:SetPoint("TOPLEFT", plateFrame, "TOPLEFT", 0, 25)
 	rankTexture:Hide()
 
-	if player.rank > 0 and player.rank <= MAX_NAMEPLATE_RANK and player.kills > 0 then
+	if nameplateIconsEnabled and player.rank > 0 and player.rank <= MAX_NAMEPLATE_RANK and player.kills > 0 then
 		rankTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\DerpRank" .. player.rank)
 		rankTexture:Show()
 	end
@@ -1572,7 +1573,7 @@ local function addMongoMonToNameplate(player, plateFrame)
 	topDamageFrame:Hide()
 	topDamageFrame.topDamageTexture:Hide()
 	
-	if player.damage > 0 and (player.damageRank >= 1 and player.damageRank <= MAX_NAMEPLATE_RANK) then
+	if nameplateIconsEnabled and player.damage > 0 and (player.damageRank >= 1 and player.damageRank <= MAX_NAMEPLATE_RANK) then
 		topDamageFrame:Show()
 		topDamageFrame.topDamageTexture:Show()
 		topDamageFrame.topDamageTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\WheelchairRank" .. player.damageRank)
@@ -1594,17 +1595,23 @@ end
  -
  -	@param table Player object
  -	@param Frame plateFrame
+ -	@param bool flag indicating whether kill - death score should be displayed on nameplate
+ -	@param bool flag indicating whether top mongo icons should be displayed on nameplate
 --]]
-local function updateNameplate(player, plateFrame)
+local function updateNameplate(player, plateFrame, nameplateScoreEnabled, nameplateIconsEnabled)
 	if not player then return end
 	if not plateFrame or not plateFrame.MM or not plateFrame.MM.topDamageFrame or not plateFrame.MM.rankTexture or not plateFrame.MM.scoreFontString then return end
 	
 	-- Player Kill / Death score
-	plateFrame.MM.scoreFontString:Show()
-	plateFrame.MM.scoreFontString:SetText(player.kills .. " - " .. player.deaths )
+	if nameplateScoreEnabled then
+		plateFrame.MM.scoreFontString:Show()
+		plateFrame.MM.scoreFontString:SetText(player.kills .. " - " .. player.deaths )
+	else
+		plateFrame.MM.scoreFontString:Hide()
+	end
 	
 	-- Killing Blow Icon
-	if player.rank > 0 and player.rank <= MAX_NAMEPLATE_RANK and player.kills > 0 then
+	if nameplateIconsEnabled and player.rank > 0 and player.rank <= MAX_NAMEPLATE_RANK and player.kills > 0 then
 		plateFrame.MM.rankTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\DerpRank" .. player.rank)
 		plateFrame.MM.rankTexture:Show()
 	else
@@ -1612,7 +1619,7 @@ local function updateNameplate(player, plateFrame)
 	end
 	
 	-- Top Damage Icon
-	if player.damage > 0 and (player.damageRank >= 1 and player.damageRank <= MAX_NAMEPLATE_RANK) then
+	if nameplateIconsEnabled and player.damage > 0 and (player.damageRank >= 1 and player.damageRank <= MAX_NAMEPLATE_RANK) then
 		plateFrame.MM.topDamageFrame:Show()
 		plateFrame.MM.topDamageFrame.topDamageTexture:SetTexture("Interface\\AddOns\\MongoMon\\Res\\WheelchairRank" .. player.damageRank)
 		plateFrame.MM.topDamageFrame.topDamageTexture:Show()
@@ -1700,8 +1707,9 @@ end
  -	@param MatchHistoryRecord
  -	@param boolean displayAar whether to display the report
  -	@param boolean aarAutoSend whether to auto send the report to chat
+ -	@param string aarChatLocation one of the chat channels to post to (BATTLEGROUND, RAID, PARTY, etc.)
 --]]
-local function updateAfterActionReport(record, displayAar, aarAutoSend)
+local function updateAfterActionReport(record, displayAar, aarAutoSend, aarChatLocation)
 	if record ~= nil then
 		scoreFrame:Hide()
 		
@@ -1799,13 +1807,23 @@ local function updateAfterActionReport(record, displayAar, aarAutoSend)
 	
 		if displayAar then
 			afterActionFrame:Show()
-		end
-		
-		if aarAutoSend then
-			afterActionFrame.button:Click()
-			afterActionFrame.button:Hide()
-		else
-			afterActionFrame.button:Show()
+
+			afterActionFrame.button:SetScript("OnClick", function(self) 
+				if not self.lastReportTime or self.lastReportTime + SEND_TO_CHAT_COOLDOWN < time() then
+					print("Sending message to " .. aarChatLocation)
+					self.lastReportTime = time()
+					local version = GetAddOnMetadata("MongoMon", "Version")
+					local text = "[" .. L["Title"] .. " v" .. version .. "] " .. self:GetParent().reportTeamFontString:GetText()
+					SendChatMessage(text, aarChatLocation)
+				end
+			end)
+
+			if aarAutoSend then
+				afterActionFrame.button:Click()
+				afterActionFrame.button:Hide()
+			else
+				afterActionFrame.button:Show()
+			end
 		end
 	end
 end

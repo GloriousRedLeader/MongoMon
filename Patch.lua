@@ -154,6 +154,21 @@ function MongoMonPatch:Upgrade(records, fromVersionStr, toVersionStr)
 		message = string.gsub(L["PatchSuccess"], "#TO_VERSION#", toVersionStr)
 		print(message)
 	end
+	
+	-- Any version before 5.4: BG Map ID Update for WoW v8.3
+	if tablelength(records) > 0 and fromVersion > 0 and fromVersion < 5.4 and toVersion >= 5.4 then
+		mapIdChanges = {
+			[519] = 1576	-- Deepwind Gorge
+		}
+		for _, record in pairs(records) do
+			if record.mapId ~= nil and mapIdChanges[record.mapId] ~= nil then
+				record.mapId = mapIdChanges[record.mapId]
+			end
+		end
+		message = string.gsub(L["PatchSuccess"], "#TO_VERSION#", toVersionStr)
+		print(message)
+	end
+	
 end
 
 --[[

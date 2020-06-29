@@ -57,11 +57,29 @@ function MongoMonTest:Run()
 	self:TestUpgradeTo5()
 	self:TestUpgradeTo51()
 	self:TestUpgradeTo53()
+	self:TestUpgradeTo54()
 	
 	-- Only run when using ptBR
 	--self:TestUpgradeTo4ptBR()
 	
 	print("All tests passed")
+end
+
+--[[
+-	New MapID for Assram and Deepwind Gorge in 8.3
+-
+-]]
+function MongoMonTest:TestUpgradeTo54()
+
+	local records = {
+		{
+			["mapId"] = 519 -- Deepwind Gorge 519 -> 1576
+		}
+	}
+	
+	MongoMonPatch:Upgrade(records, "5.3", "5.4")
+	
+	assert(records[1].mapId == 1576, "Deepwind Gorge")
 end
 
 --[[

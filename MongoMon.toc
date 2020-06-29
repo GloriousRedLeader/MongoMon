@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: Mongo Monitor OP Unit Frames
 ## Notes: Battleground Enhancer
 ## Author: Fuhrbolg
-## Version: 5.3
+## Version: 5.4
 ## SavedVariables: MongoMonDB
 ## OptionalDeps: Ace3, LibNameplateRegistry-1.0
 ## X-Embeds: Ace3, LibNameplateRegistry-1.0

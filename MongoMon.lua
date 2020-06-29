@@ -203,12 +203,14 @@ local defaults = {
 	profile = {
 		portraitEnabled = true,
 		scoreEnabled = true,
-		nameplatesEnabled = true,
 		flashEnabled = true,
 		soundEnabled = true,
 		aarEnabled = true,
 		rbgEnabled = false,
-		aarAutoSendEnabled = false
+		aarAutoSendEnabled = false,
+		nameplateScoreEnabled = true,
+		nameplateIconsEnabled = true,
+		aarChatLocation = "INSTANCE_CHAT"
 	},
 	-- Table of match history records. These are fed to the MatchHistoryService
 	char = {
@@ -220,6 +222,7 @@ local defaults = {
 }
 
 -- Our AceDB options table. This creates the UI in the Addons options section automagically.
+-- https://www.wowace.com/projects/ace3/pages/ace-config-3-0-options-tables
 local options = {
 	type = "group",
 	name = "MongoMon",
@@ -263,63 +266,90 @@ local options = {
 			type = "description",
 			name = L["ScoreDescription"]
 		},
-		nameplatesEnabled = {
+		nameplateScoreEnabled = {
 			order = 8,
 			type = "toggle",
-			name = L["EnableNameplates"],
+			name = L["EnableNameplateScore"],
 		},
-		nameplatesDescription = {
+		nameplatesScoreDescription = {
 			order = 9,
 			type = "description",
-			name = L["NameplatesDescription"]
+			name = L["NameplateScoreDescription"]
+		},
+		nameplateIconsEnabled = {
+			order = 10,
+			type = "toggle",
+			name = L["EnableNameplateIcons"],
+		},
+		nameplatesIconsDescription = {
+			order = 11,
+			type = "description",
+			name = L["NameplateIconsDescription"]
 		},
 		flashEnabled = {
-			order = 10,
+			order = 12,
 			type = "toggle",
 			name = L["EnableFlash"]
 		},
 		flashDescription = {
-			order = 11,
+			order = 13,
 			type = "description",
 			name = L["FlashDescription"]
 		},
 		soundEnabled = {
-			order = 12,
+			order = 14,
 			type = "toggle",
 			name = L["EnableSound"]
 		},
 		soundDescription = {
-			order = 13,
+			order = 15,
 			type = "description",
 			name = L["SoundDescription"]
 		},
 		aarEnabled = {
-			order = 14,
+			order = 16,
 			type = "toggle",
 			name = L["EnableAAR"]
 		},
 		aarDescription = {
-			order = 15,
+			order = 17,
 			type = "description",
 			name = L["AARDescription"]
 		},
 		aarAutoSendEnabled = {
-			order = 16,
+			order = 18,
 			type = "toggle",
 			name = L["EnableAARAutoSend"]
 		},
 		aarAutoSendDescription = {
-			order = 17,
+			order = 19,
 			type = "description",
 			name = L["AARAutoSendDescription"]
 		},
+		aarChatLocation = {
+			order = 20,
+			type = "select",
+			style = "dropdown",
+			values = {
+				INSTANCE_CHAT = "Battleground",
+				PARTY = "Party",
+				GUILD = "Guild",
+				RAID = "Raid"
+			},
+			name = L["AARChatLocation"]
+		},
+		aarChatLocationDescription = {
+			order = 21,
+			type = "description",
+			name = L["AARChatLocationDescription"]
+		},
 		rbgEnabled = {
-			order = 18,
+			order = 22,
 			type = "toggle",
 			name = L["EnableRBG"]
 		},
 		rbgDescription = {
-			order = 19,
+			order = 23,
 			type = "description",
 			name = L["RBGDescription"]
 		}
@@ -358,6 +388,15 @@ end
 --]]
 function MongoMon:OptionSetterHandler(info, value)
 	self.db[info[#info]] = value
+	print("The " .. info[#info] .. " was set to: " .. tostring(value) )
+	--[[print(info.options)
+	-- AAR options require AAR to be enabled
+	if info[#info] == "aarEnabled" then
+		if value == true then
+		
+		end
+	end]]--
+	
 	if self.isInSupportedBg then -- Re-initialize state if user changes settings during a battleground
 		self:Initialize()
 	end
@@ -442,13 +481,22 @@ function MongoMon:Initialize()
 			displayScoreboard(self.IS_HEALER)
 		end
 	elseif DEBUG_ENABLED then
-		scoreFrame:Show()
+		--[[scoreFrame:Show()
 		scoreFrame.killDeathFontString:SetText("7 - 11")
 		scoreFrame.damageHealingFontString:SetText("137.4 mil damage")
 		scoreFrame.damageHealingDiffFontString:SetText("(24.1 mil behind leader)")
 		scoreFrame:SetScript("OnMouseUp", function(self, button) -- Toggle the actual bg scoreboard when you press this.
 			displayKillingBlow("Mind Blast", 345234, "Raul - Thunderhoof", "PRIEST")
 		end)
+		afterActionFrame.button:SetScript("OnClick", function(self) 
+			if not self.lastReportTime or self.lastReportTime + SEND_TO_CHAT_COOLDOWN < time() then
+				self.lastReportTime = time()
+				local version = GetAddOnMetadata("MongoMon", "Version")
+				local text = "Hooray"
+				print(MongoMon.db.aarChatLocation)
+				SendChatMessage(text, MongoMon.db.aarChatLocation)
+			end
+		end)--]]
 		--afterActionFrame:Show()
 		--matchHistoryFrame:Show()
 		--killHistoryFrame:Show()
@@ -729,7 +777,7 @@ function MongoMon:UpdateBattlefieldScore()
 
 		-- Update nameplates for all players
 		local plateFrame = self:GetPlateByGUID(player.GUID)
-		updateNameplate(player, plateFrame)
+		updateNameplate(player, plateFrame, self.db.nameplateScoreEnabled, self.db.nameplateIconsEnabled)
 		
 		-- Update personal scoreboard
 		if player.name == self.PLAYER_NAME then
@@ -746,7 +794,7 @@ function MongoMon:UpdateBattlefieldScore()
 			print(string.format("|c%s" .. L["SaveFailed"] .. "|r", TEXT_COLOR))
 		else
 			self.history:Save(record)
-			updateAfterActionReport(record, self.db.aarEnabled, self.db.aarAutoSendEnabled)
+			updateAfterActionReport(record, self.db.aarEnabled, self.db.aarAutoSendEnabled, self.db.aarChatLocation)
 		end
 	end
 end
@@ -839,8 +887,8 @@ function MongoMon:LNR_ON_NEW_PLATE(eventname, plateFrame, plateData)
 		return 
 	elseif self.PLAYER_GUID == plateData.GUID then
 		return	
-	elseif  self.db.nameplatesEnabled then
-		addMongoMonToNameplate(player, plateFrame)
+	elseif  self.db.nameplateScoreEnabled or self.db.nameplateIconsEnabled then
+		addMongoMonToNameplate(player, plateFrame, self.db.nameplateScoreEnabled, self.db.nameplateIconsEnabled)
 	end
 end
 
