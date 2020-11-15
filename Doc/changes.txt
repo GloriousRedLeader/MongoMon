@@ -52,3 +52,8 @@ Version 5.4
 - Adding some height to the credits frame (/mm credits)
 - Added dropdown to select the after action report chat location
 - Clicking personal scoreboard will once again open the battleground scoreboard
+
+Version 9.0
+- Changing version numbers so they match wow retail client, makes life easier
+- SetBackdrop frame no longer available by default, have to enable it where needed: https://www.wowinterface.com/forums/showthread.php?t=58109
+- Some global functions are now in the C_PvP namespace

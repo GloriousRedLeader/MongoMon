@@ -616,7 +616,7 @@ MatchHistoryRecord.New = function(player, players)
 	
 	self.mapId = C_Map.GetBestMapForUnit("player")
 	self.season = GetCurrentArenaSeason()
-	self.isRated = IsRatedBattleground()	
+	self.isRated = C_PvP.IsRatedBattleground()	
 	
 	-- Apparently mapId is not guaranteed and will corrupt data. This record will be lost.
 	if self.mapId == nil then return end

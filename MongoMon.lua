@@ -388,15 +388,7 @@ end
 --]]
 function MongoMon:OptionSetterHandler(info, value)
 	self.db[info[#info]] = value
-	print("The " .. info[#info] .. " was set to: " .. tostring(value) )
-	--[[print(info.options)
-	-- AAR options require AAR to be enabled
-	if info[#info] == "aarEnabled" then
-		if value == true then
-		
-		end
-	end]]--
-	
+	print("The " .. info[#info] .. " setting was set to: " .. tostring(value) )
 	if self.isInSupportedBg then -- Re-initialize state if user changes settings during a battleground
 		self:Initialize()
 	end
@@ -427,7 +419,7 @@ end
 --]]
 function MongoMon:Initialize()
 	self.isInSupportedBg = self:IsSupportedBG()
-	self.isRatedBattleground = IsRatedBattleground()
+	self.isRatedBattleground = C_PvP.IsRatedBattleground()
 
 	-- Clears all refs
 	table.wipe(self.players)

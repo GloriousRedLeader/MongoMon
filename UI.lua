@@ -79,7 +79,7 @@ local BACKDROP_BAD = {
 local mongoMonFrame = CreateFrame("FRAME", "MongoMonFrame")
 
 -- Scoreboard frame that will display Kill - Death in BG's
-local scoreFrame = CreateFrame("FRAME", "MongoMonScoreFrame")
+local scoreFrame = CreateFrame("FRAME", "MongoMonScoreFrame", self, BackdropTemplateMixin and "BackdropTemplate")
 scoreFrame:SetMovable(true)
 scoreFrame:EnableMouse(true)
 scoreFrame:RegisterForDrag("LeftButton")
@@ -221,7 +221,7 @@ scoreFrame.killFlashFrame:Hide()
  -	regarding killing blows and victims.
 --]]
 
-local killHistoryFrame = CreateFrame("FRAME", "MongoMonKillHistoryFrame")
+local killHistoryFrame = CreateFrame("FRAME", "MongoMonKillHistoryFrame", self, BackdropTemplateMixin and "BackdropTemplate")
 killHistoryFrame:SetFrameStrata("HIGH")
 killHistoryFrame:SetPoint("CENTER", nil, "CENTER", 0, 0)
 killHistoryFrame:SetWidth(830)
@@ -354,7 +354,7 @@ killHistoryFrame.scrollingTable = ScrollingTable:CreateST(cols, 27, nil, nil, ki
  -	This screen provides statistics over the span of multiple battlegrounds.
 --]]
 
-local matchHistoryFrame = CreateFrame("FRAME", "MongoMonMatchHistoryFrame")
+local matchHistoryFrame = CreateFrame("FRAME", "MongoMonMatchHistoryFrame", self, BackdropTemplateMixin and "BackdropTemplate")
 matchHistoryFrame:SetFrameStrata("HIGH")
 matchHistoryFrame:SetPoint("CENTER", nil, "CENTER", 0, 0)
 matchHistoryFrame:SetWidth(930)
@@ -574,7 +574,7 @@ matchHistoryFrame.sendToGuildButton:SetText(L["SendToGuild"])
 --]]
 
 -- Primary container and background
-local afterActionFrame = CreateFrame("FRAME", "MongoMonAfterActionFrame")
+local afterActionFrame = CreateFrame("FRAME", "MongoMonAfterActionFrame", self, BackdropTemplateMixin and "BackdropTemplate")
 afterActionFrame:SetFrameStrata("HIGH") -- Appear above annoying junk
 afterActionFrame:SetFrameLevel(10) -- Appear above annoying junk
 afterActionFrame:SetPoint("TOP", nil, "TOP", 0, -20)
@@ -688,7 +688,7 @@ afterActionFrame.button:SetText(L["SendToChat"])
  --]]
 
 -- Primary container and background
-local creditsFrame = CreateFrame("FRAME", "MongoMonCreditsFrame")
+local creditsFrame = CreateFrame("FRAME", "MongoMonCreditsFrame", self, BackdropTemplateMixin and "BackdropTemplate")
 creditsFrame:SetFrameStrata("HIGH") -- Appear above annoying junk
 creditsFrame:SetFrameLevel(10) -- Appear above annoying junk
 creditsFrame:SetPoint("TOP", nil, "TOP", 0, -20)
@@ -919,13 +919,13 @@ end
  -	@param frame parent
 --]]
 local function createTopKillingBlowSpells(parent)
-	parent.spellFrame1 = CreateFrame("FRAME", nil, parent)
+	parent.spellFrame1 = CreateFrame("FRAME", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 	parent.spellFrame1:SetPoint("TOP", parent, "TOP", -150, -10)
 	
-	parent.spellFrame2 = CreateFrame("FRAME", nil, parent)
+	parent.spellFrame2 = CreateFrame("FRAME", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 	parent.spellFrame2:SetPoint("TOP", parent, "TOP", 0, -10)
 	
-	parent.spellFrame3 = CreateFrame("FRAME", nil, parent)
+	parent.spellFrame3 = CreateFrame("FRAME", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 	parent.spellFrame3:SetPoint("TOP", parent, "TOP", 150, -10)
 	
 	local frames = { parent.spellFrame1, parent.spellFrame2, parent.spellFrame3 }
@@ -1066,13 +1066,13 @@ end
  -	@parent Frame to be embedded in
 --]]
 local function createTopSpecs(parent) 
-	parent.specFrame1 = CreateFrame("FRAME", nil, parent)
+	parent.specFrame1 = CreateFrame("FRAME", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 	parent.specFrame1:SetPoint("TOP", parent, "TOP", -80, -20)
 	
-	parent.specFrame2 = CreateFrame("FRAME", nil, parent)
+	parent.specFrame2 = CreateFrame("FRAME", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 	parent.specFrame2:SetPoint("TOP", parent, "TOP", 0, -20)
 	
-	parent.specFrame3 = CreateFrame("FRAME", nil, parent)
+	parent.specFrame3 = CreateFrame("FRAME", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
 	parent.specFrame3:SetPoint("TOP", parent, "TOP", 80, -20)
 	
 	local frames = { parent.specFrame1, parent.specFrame2, parent.specFrame3 }
