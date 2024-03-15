@@ -143,9 +143,15 @@ local IMAGE_FILES_BY_SPEC_ID = {
 	[577] = "Interface\\AddOns\\MongoMon\\Res\\WhiskeyTango",	-- Demon Hunter-Havoc
 	[581] = "Interface\\AddOns\\MongoMon\\Res\\WhiskeyTango",	-- Demon Hunter-Vengeance
 	[269] = "Interface\\AddOns\\MongoMon\\Res\\Terminator",		-- Monk-Windwalker
+	[1468] = "Interface\\AddOns\\MongoMon\\Res\\Browmaster",	-- Evoker-Preservation
+	[1467] = "Interface\\AddOns\\MongoMon\\Res\\Browmaster",	-- Evoker-Devastation
+	[1473] = "Interface\\AddOns\\MongoMon\\Res\\Browmaster",	-- Evoker-Augmentation
 }
 
 -- https://wow.gamepedia.com/API_GetInspectSpecialization { left, right, top, bottom }
+-- These guys have a good one, note that I did not use this. Just might be a good reference
+-- One day. But really the best idea would be to get rid of this fuckign sprite and just use
+-- Images named after the spec id. This is a pain in the ass to maintain. 
 local SPEC_ID_ICONS = {
 	[250] = { 0, 1/9, 0, 1/5 },			-- Death Knight-Blood
 	[251] = { 0, 1/9, 1/5, 2/5 },			-- Death Knight-Frost
@@ -182,7 +188,10 @@ local SPEC_ID_ICONS = {
 	[72] = { 6/9, 7/9, 2/5, 3/5 }, 			-- Warrior-Fury
 	[258] = { 7/9, 8/9, 0, 1/5 },			-- Priest-Shadow
 	[265] = { 7/9, 8/9, 1/5, 2/5 },			-- Warlock-Affliction
-	[73] = { 7/9, 8/9, 2/5, 3/5 }			-- Warrior-Protection
+	[73] = { 7/9, 8/9, 2/5, 3/5 },			-- Warrior-Protection
+	[1468] = { 8/9, 9/9, 0, 1/5 },			-- Evoker-Preservation
+	[1467] = { 8/9, 9/9, 1/5, 2/5 },		-- Evoker-Devastation
+	[1473] = { 8/9, 9/9, 2/5, 3/5 },		-- Evoker-Augmentation
 }
 
 -- Class specific colors http://wowwiki.wikia.com/wiki/Class_colors
@@ -198,7 +207,8 @@ local CLASS_TOKEN_COLORS = {
 	["ROGUE"] = { 1.0, 0.96, 0.41 },
 	["SHAMAN"] = { 0.0, 0.44, 0.87 },
 	["WARLOCK"] = { 0.58, 0.51, 0.79 },
-	["WARRIOR"] = { 0.78, 0.61, 0.43 }
+	["WARRIOR"] = { 0.78, 0.61, 0.43 },
+	["EVOKER"] = { 0.20, 0.58, 0.50 }
 }
 
 -- Map whose key is classToken and value is ClassID.
@@ -226,17 +236,17 @@ end
 -- https://github.com/AcidWeb/REPorter/blob/master/REPorter.lua
 -- EOTS I have 112, REPorter has 397
 local BG_MAP_IDS = {
-	[91] = C_Map.GetMapInfo(91).name,	-- Alterac Valley [OLD: 401]
+	[91] = C_Map.GetMapInfo(91).name,		-- Alterac Valley [OLD: 401]
 	[1366] = C_Map.GetMapInfo(1366).name,	-- Arathi Basin - This obviously needs 3 Map IDs (93, 837, 844) [OLD: 461] 5.3: 93 -> 1366
 	[1576] = C_Map.GetMapInfo(1576).name,	-- Deepwind Gorge [OLD: 935] (Was 519 and changed to 1576 in 8.3)
-	[112] = C_Map.GetMapInfo(112).name,	-- Eye of the Storm - Two Map IDs (112, 397) [OLD: 482]
-	[169] = C_Map.GetMapInfo(169).name,	-- Isle of Conquest [OLD: 540]
-	[423] = C_Map.GetMapInfo(423).name,	-- Silvershard Mines [OLD: 860]
-	[417] = C_Map.GetMapInfo(417).name,	-- Temple of Kotmogu - Two Map IDs (417, 449) [OLD: 856]
-	[275] = C_Map.GetMapInfo(275).name,	-- The Battle for Gilneas [OLD: 736]
-	[206] = C_Map.GetMapInfo(206).name,	-- Twin Peaks [OLD: 626]
+	[112] = C_Map.GetMapInfo(112).name,		-- Eye of the Storm - Two Map IDs (112, 397) [OLD: 482]
+	[169] = C_Map.GetMapInfo(169).name,		-- Isle of Conquest [OLD: 540]
+	[423] = C_Map.GetMapInfo(423).name,		-- Silvershard Mines [OLD: 860]
+	[417] = C_Map.GetMapInfo(417).name,		-- Temple of Kotmogu - Two Map IDs (417, 449) [OLD: 856]
+	[275] = C_Map.GetMapInfo(275).name,		-- The Battle for Gilneas [OLD: 736]
+	[206] = C_Map.GetMapInfo(206).name,		-- Twin Peaks [OLD: 626]
 	[1339] = C_Map.GetMapInfo(1339).name,	-- Warsong Gulch - Two Map IDs (92, 859) [OLD: 443] 5.3 92 -> 1339
-	[907] = C_Map.GetMapInfo(907).name,	-- Seething Shore [OLD: 1186]
+	[907] = C_Map.GetMapInfo(907).name,		-- Seething Shore [OLD: 1186]
 	[1334] = C_Map.GetMapInfo(1334).name,	-- Wintergrasp "Epic" Battleground lol
 	[1478] = C_Map.GetMapInfo(1478).name	-- Assram "Epic" Battleground lol (Was 1478 changed to XXX in 8.3)
 }
@@ -252,10 +262,10 @@ local FACTIONS = {
 local MAX_BG_HISTORY = 50
 
 -- Used to determine whether player is a Healer or DPS
-local HEALER_SPECS = { "Discipline", "Holy", "Restoration", "Mistweaver" }
+local HEALER_SPECS = { "Discipline", "Holy", "Restoration", "Mistweaver", "Preservation" }
 
 -- Used to determine whether player is a Healer or DPS
-local HEALER_SPEC_IDS = { 105, 270, 65, 256, 257, 264 }
+local HEALER_SPEC_IDS = { 105, 270, 65, 256, 257, 264, 1468 }
 
 -- Matches any "unit" under the player's control, used by the COMBAT_LOG_UNFILTERED event handler to look for killing blows
 -- borrowed from the KillingBlow_Enhanced addon. Muchos gracious.
