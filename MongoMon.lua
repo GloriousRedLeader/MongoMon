@@ -513,6 +513,15 @@ end
 -	@return boolean
 --]]
 function MongoMon:IsSupportedBG()
+	-- Around 10.x or so brawls were introduced. Those are essentially bg maps with different
+	-- rules. Disable MongoMon for brawls because players can play for the opposite faction
+	-- and there's no way to reliably determine which team the player is on. This presents
+	-- itself during the after action report and potentially how we save a record (not
+	-- sure if faction is tagged there).
+	if C_PvP.GetActiveBrawlInfo() == nil then
+		return false
+	end
+
 	-- 8.0 Map API Change (no more need to SetMapToCurrentZone())
 	local mapID = C_Map.GetBestMapForUnit("player") 
 
