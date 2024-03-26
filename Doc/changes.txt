@@ -62,3 +62,9 @@ Version 10.0
 - Updated LibGraph
 - Updated LibButtonGlow
 - Added a bunch of bullshit for a new class
+
+Version 10.1
+- Disabling in brawls
+
+Version 10.2
+- Now with even more disabling in brawls (but slightly less in regular bgs)

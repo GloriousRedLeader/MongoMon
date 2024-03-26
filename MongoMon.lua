@@ -518,7 +518,7 @@ function MongoMon:IsSupportedBG()
 	-- and there's no way to reliably determine which team the player is on. This presents
 	-- itself during the after action report and potentially how we save a record (not
 	-- sure if faction is tagged there).
-	if C_PvP.GetActiveBrawlInfo() == nil then
+	if C_PvP.GetActiveBrawlInfo() ~= nil then
 		return false
 	end
 
