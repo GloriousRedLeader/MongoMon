@@ -1,11 +1,12 @@
-## Interface: 90001
+## Interface: 100206
 ## Title: Mongo Monitor OP Unit Frames
 ## Notes: Battleground Enhancer
 ## Author: Fuhrbolg
-## Version: 9.0
+## Version: 10.2
 ## SavedVariables: MongoMonDB
 ## OptionalDeps: Ace3, LibNameplateRegistry-1.0
 ## X-Embeds: Ace3, LibNameplateRegistry-1.0
+## IconTexture: Interface\AddOns\MongoMon\Res\Fuhr
 
 ## Libraries
 embeds.xml

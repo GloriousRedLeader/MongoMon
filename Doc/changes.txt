@@ -57,3 +57,14 @@ Version 9.0
 - Changing version numbers so they match wow retail client, makes life easier
 - SetBackdrop frame no longer available by default, have to enable it where needed: https://www.wowinterface.com/forums/showthread.php?t=58109
 - Some global functions are now in the C_PvP namespace
+
+Version 10.0
+- Updated LibGraph
+- Updated LibButtonGlow
+- Added a bunch of bullshit for a new class
+
+Version 10.1
+- Disabling in brawls
+
+Version 10.2
+- Now with even more disabling in brawls (but slightly less in regular bgs)

@@ -473,12 +473,15 @@ function MongoMon:Initialize()
 			displayScoreboard(self.IS_HEALER)
 		end
 	elseif DEBUG_ENABLED then
-		--[[scoreFrame:Show()
+		scoreFrame:Show()
 		scoreFrame.killDeathFontString:SetText("7 - 11")
 		scoreFrame.damageHealingFontString:SetText("137.4 mil damage")
 		scoreFrame.damageHealingDiffFontString:SetText("(24.1 mil behind leader)")
 		scoreFrame:SetScript("OnMouseUp", function(self, button) -- Toggle the actual bg scoreboard when you press this.
 			displayKillingBlow("Mind Blast", 345234, "Raul - Thunderhoof", "PRIEST")
+			PlaySoundFile("Interface\\AddOns\\MongoMon\\Res\\Wunderbar.mp3", "master")
+			LibStub("LibButtonGlow-1.0").ShowOverlayGlow(scoreFrame)
+			LibStub("LibButtonGlow-1.0").HideOverlayGlow(scoreFrame)
 		end)
 		afterActionFrame.button:SetScript("OnClick", function(self) 
 			if not self.lastReportTime or self.lastReportTime + SEND_TO_CHAT_COOLDOWN < time() then
@@ -488,7 +491,7 @@ function MongoMon:Initialize()
 				print(MongoMon.db.aarChatLocation)
 				SendChatMessage(text, MongoMon.db.aarChatLocation)
 			end
-		end)--]]
+		end)
 		--afterActionFrame:Show()
 		--matchHistoryFrame:Show()
 		--killHistoryFrame:Show()
@@ -510,6 +513,15 @@ end
 -	@return boolean
 --]]
 function MongoMon:IsSupportedBG()
+	-- Around 10.x or so brawls were introduced. Those are essentially bg maps with different
+	-- rules. Disable MongoMon for brawls because players can play for the opposite faction
+	-- and there's no way to reliably determine which team the player is on. This presents
+	-- itself during the after action report and potentially how we save a record (not
+	-- sure if faction is tagged there).
+	if C_PvP.GetActiveBrawlInfo() ~= nil then
+		return false
+	end
+
 	-- 8.0 Map API Change (no more need to SetMapToCurrentZone())
 	local mapID = C_Map.GetBestMapForUnit("player") 
 
